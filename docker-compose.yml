@@ -1,0 +1,22 @@
+---
+version: '3'
+
+services:
+  fastapi-openai:
+    container_name: fastapi-openai
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dceoy/fastapi-openai:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - ${PWD}:/wd:ro
+    working_dir: /wd
+    entrypoint:
+      - /usr/local/bin/uvicorn
+    command:
+      - app.main:app
+      - --host=0.0.0.0
+      - --port=8000
+      - --reload
