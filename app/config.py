@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 
+import openai
 from pydantic import BaseSettings
 
 
@@ -14,4 +15,6 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def read_settings():
-    return Settings()
+    settings = Settings()
+    openai.api_key = settings.openai_api_key
+    return settings
