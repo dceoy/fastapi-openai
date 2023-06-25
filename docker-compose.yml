@@ -8,6 +8,11 @@ services:
       context: .
       dockerfile: Dockerfile
     image: dceoy/fastapi-openai:latest
+    restart: always
+    networks:
+      - db
+    depends_on:
+      - postgres
     ports:
       - 8000:8000
     volumes:
@@ -20,3 +25,22 @@ services:
       - --host=0.0.0.0
       - --port=8000
       - --reload
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    networks:
+      - db
+    ports:
+      - 5432:5432
+    volumes:
+      - ${PWD}/postgres/init:/docker-entrypoint-initdb.d
+      - ${PWD}/postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USET: postgres
+      POSTGRES_PASSWORD: postgres
+networks:
+  db:
+    external: false
+# volumes:
+#   postgres_data:
