@@ -10,5 +10,5 @@ CREATE TABLE completion (
   completion_model TEXT NOT NULL,
   completion_prompt TEXT NOT NULL,
   completion_temperature REAL NOT NULL,
-  completion_result TEXT NOT NULL
+  completion_result JSONB NOT NULL
 );

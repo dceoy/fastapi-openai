@@ -7,7 +7,7 @@ class CompletionBase(BaseModel):
     completion_model: str
     completion_prompt: str
     completion_temperature: float
-    completion_result: str
+    completion_result: dict
 
 
 class CompletionCreate(CompletionBase):

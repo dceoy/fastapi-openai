@@ -2,7 +2,7 @@
 version: '3'
 
 services:
-  rest-api:
+  rest:
     container_name: fastapi-openai
     build:
       context: .
@@ -36,8 +36,8 @@ services:
     volumes:
       - ${PWD}/db/init:/docker-entrypoint-initdb.d:ro
       - ${PWD}/db/data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+    # environment:
+    #   POSTGRES_HOST_AUTH_METHOD: trust
     env_file:
       - .env
 networks:

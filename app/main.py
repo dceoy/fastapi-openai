@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import json
 import logging
 
 import openai
@@ -9,7 +8,7 @@ from sqlalchemy.orm import Session
 from typing_extensions import Annotated
 
 from .config import Settings, read_settings
-from .crud import create_completion
+from .crud import create_completion, get_completions
 from .database import DbSession
 from .schemas import Completion, CompletionCreate
 
@@ -51,14 +50,22 @@ def suggest_dinner_menus(
             completion_model=completion_kwargs['model'],
             completion_prompt=completion_kwargs['prompt'],
             completion_temperature=completion_kwargs['temperature'],
-            completion_result=json.dumps(completion_result)
+            completion_result=completion_result
         )
     )
 
 
+@app.get('/completions/', response_model=list[Completion])
+def get_past_comletions(
+    skip: int = 0, limit: int = 100,
+        db_session: Session = Depends(_get_db_session)
+):
+    return get_completions(db_session=db_session, skip=skip, limit=limit)
+
+
 def _generate_prompt_to_suggest_dinner_menus(ingredient: str):
     return f'''
-Suggest dinner menus based on a given ingredient.
+Suggest dinner menus based on a given ingredient in 100 characters or less.
 
 Ingredient: Chicken breasts
 Menus: Grilled Chicken Caesar Salad or Chicken Alfredo Pasta

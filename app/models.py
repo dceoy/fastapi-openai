@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy import Column, Float, JSON, Integer, String
 
 from .database import DbBase
 
@@ -12,4 +12,4 @@ class Completion(DbBase):
     completion_model = Column(String)
     completion_prompt = Column(String)
     completion_temperature = Column(Float)
-    completion_result = Column(String)
+    completion_result = Column(JSON)
