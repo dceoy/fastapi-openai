@@ -2,17 +2,17 @@
 version: '3'
 
 services:
-  fastapi-openai:
+  rest-api:
     container_name: fastapi-openai
     build:
       context: .
       dockerfile: Dockerfile
     image: dceoy/fastapi-openai:latest
-    restart: always
+    # restart: always
     networks:
       - db
     depends_on:
-      - postgres
+      - db
     ports:
       - 8000:8000
     volumes:
@@ -25,22 +25,23 @@ services:
       - --host=0.0.0.0
       - --port=8000
       - --reload
-  postgres:
+  db:
     container_name: postgres
     image: postgres:latest
-    restart: always
+    # restart: always
     networks:
       - db
     ports:
       - 5432:5432
     volumes:
-      - ${PWD}/postgres/init:/docker-entrypoint-initdb.d
-      - ${PWD}/postgres/data:/var/lib/postgresql/data
+      - ${PWD}/db/init:/docker-entrypoint-initdb.d:ro
+      - ${PWD}/db/data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USET: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    env_file:
+      - .env
 networks:
   db:
     external: false
 # volumes:
-#   postgres_data:
+#   postgres-data:
