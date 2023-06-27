@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -16,6 +18,7 @@ class CompletionCreate(CompletionBase):
 
 class Completion(CompletionBase):
     id: int
+    timestamp: datetime
 
     class Config:
         orm_mode = True
