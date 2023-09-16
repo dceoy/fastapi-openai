@@ -34,8 +34,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ${PWD}/db/init:/docker-entrypoint-initdb.d:ro
-      - ${PWD}/db/data:/var/lib/postgresql/data
+      - ${PWD}/db:/docker-entrypoint-initdb.d:ro
+      - postgres-data:/var/lib/postgresql/data
     # environment:
     #   POSTGRES_HOST_AUTH_METHOD: trust
     env_file:
@@ -43,5 +43,5 @@ services:
 networks:
   db:
     external: false
-# volumes:
-#   postgres-data:
+volumes:
+  postgres-data:

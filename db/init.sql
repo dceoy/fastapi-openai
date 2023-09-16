@@ -1,10 +1,6 @@
 -- SQL to initialize the database
 
--- CREATE DATABASE openai;
--- \c openai;
-
-DROP TABLE IF EXISTS completion;
-CREATE TABLE completion (
+CREATE TABLE IF NOT EXISTS completion (
   id SERIAL PRIMARY KEY,
   timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   completion_model TEXT NOT NULL,
