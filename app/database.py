@@ -4,7 +4,9 @@ import logging
 import os
 
 import pandas as pd
+from fastapi import HTTPException
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import DatabaseError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -12,15 +14,19 @@ from .config import read_settings
 
 
 def execute_sql(sql, return_df=False):
-    logger = logging.getLogger(__name__)
-    with DbSession.connection() as c:
-        logger.info(f'Executing SQL: {sql}')
-        df = pd.read_sql_query(text(sql), c)
-    logger.debug(f'df:{os.linesep}{df}')
-    if return_df:
-        return df
+    logger = logging.getLogger('uvicorn')
+    logger.info(f'Executing SQL: {sql}')
+    try:
+        with DbSession() as s:
+            df = pd.read_sql_query(text(sql), s.connection())
+    except DatabaseError as e:
+        raise HTTPException(status_code=500, detail=str(e))
     else:
-        return df.to_dict(orient='records')
+        logger.debug(f'df:{os.linesep}{df}')
+        if return_df:
+            return df
+        else:
+            return df.to_dict(orient='records')
 
 
 def _create_db_engine():

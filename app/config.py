@@ -3,7 +3,7 @@
 from functools import lru_cache
 
 import openai
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):

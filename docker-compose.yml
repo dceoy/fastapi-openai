@@ -1,6 +1,5 @@
 ---
 version: '3'
-
 services:
   rest:
     container_name: fastapi-openai

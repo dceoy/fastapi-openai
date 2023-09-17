@@ -34,7 +34,7 @@ def suggest_dinner_menus(
     settings: Annotated[Settings, Depends(read_settings)],
     db_session: Session = Depends(_get_db_session)
 ):
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('uvicorn')
     completion_kwargs = {
         'model': settings.openai_completion_model_id,
         'prompt':
